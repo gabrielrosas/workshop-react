@@ -3,16 +3,16 @@ import {
     Item,
 } from 'semantic-ui-react'
 
-function ItemFilme() {
+function ItemFilme({ imgUrl, titulo, ano }) {
     return (
         <Item>
             <Item.Image
                 size='tiny'
-                src= "https://react.semantic-ui.com/images/wireframe/image.png"
+                src= {imgUrl} 
             />
             <Item.Content>
-                <Item.Header>Titulo</Item.Header>
-                <Item.Meta>Ano: 2022</Item.Meta>
+                <Item.Header>{titulo}</Item.Header>
+                <Item.Meta>Ano: {ano}</Item.Meta>
                 <Item.Extra>
                     <Button.Group>
                         <Button icon="star outline" />
