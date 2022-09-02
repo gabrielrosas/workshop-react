@@ -5,25 +5,19 @@ import {
 
 import ItemFilme from './ItemFilme'
 
-function ListaFilmes() {
+function ListaFilmes({ records }) {
     return (
         <Segment>
             <Item.Group divided>
-                <ItemFilme
-                    titulo="The Avengers"
-                    imgUrl="https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg"
-                    ano="2012"
-                />
-                <ItemFilme
-                    titulo="Avengers: Endgame"
-                    imgUrl="https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_.jpg"
-                    ano="2019"
-                />
-                <ItemFilme
-                    titulo="Avengers: Infinity War"
-                    imgUrl="https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_.jpg"
-                    ano="2018"
-                />
+                {records.map((record) => (
+                    <ItemFilme
+                        key={record.id}
+                        imgUrl={record.imgUrl}
+                        titulo={record.titulo}
+                        ano={record.ano}
+                        id={record.id}
+                    />
+                ))}
             </Item.Group>
         </Segment>
     )
