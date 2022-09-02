@@ -1,18 +1,24 @@
 import {
   Container,
   Header,
+  Divider
 } from 'semantic-ui-react'
 
 import './App.css';
 
-import PrimeiroComponente from './Componentes/PrimeiroComponente' //Adicionar
+import CampoBusca from './Componentes/CampoBusca';
+import ListaFilmes from './Componentes/ListaFilmes';
 
 function App() {
   return (
     <Container text className="containerPage">
       <Header as='h1'>Avaliação de Filmes</Header>
 
-      <PrimeiroComponente/> {/* Adicionar */}
+      <Divider/>
+      <CampoBusca/>
+      <Divider/>
+
+      <ListaFilmes/>
     </Container>
   );
 }
