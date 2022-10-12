@@ -1,4 +1,6 @@
-import { useState } from 'react' //importando  useState
+import { useState } from 'react'
+
+import axios from 'axios' //importando axios
 
 import {
   Container,
@@ -11,42 +13,37 @@ import './App.css';
 import CampoBusca from './Componentes/CampoBusca';
 import ListaFilmes from './Componentes/ListaFilmes';
 
-const recordsMock = [{
-  titulo: "The Avengers",
-  imgUrl: "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
-  ano: 2012,
-  id: "tt0848228",
-},{
-  titulo: "Avengers: Endgame",
-  imgUrl: "https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_.jpg",
-  ano: 2019,
-  id: "tt4154796",
-},{
-  titulo: "Avengers: Infinity War",
-  imgUrl: "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_.jpg",
-  ano: 2018,
-  id: "tt4154756",
-}]
+//função parse do resultado da requisição
+const parseRecord = (record) => {
+  return {
+    titulo: record.Title,
+    imgUrl: record.Poster,
+    ano: record.Year,
+    id: record.imdbID,
+  }
+}
 
 function App() {
-  //Criando estados
   const [loading, setLoading] = useState(false) 
   const [records, setRecords] = useState([])
 
-  //ccriando função base para a busca
+  //fazendo requisição
   const search = (termo) => {
     if (termo) {
-      console.log({ termo })
       setLoading(true)
-
-      setTimeout(() => {
+      const urlTermo = encodeURIComponent(termo)
+      axios.get(`https://www.omdbapi.com/?s=${urlTermo}&apikey=${process.env.REACT_APP_APIKEY}`).then((result) => {
+        try {
+          const newRecords = result.data.Search.map(parseRecord)
+          setRecords(newRecords)
+        } catch (error) {
+          setRecords([])
+        }
         setLoading(false)
-        setRecords(recordsMock)
-      }, 2000)
+      })
     }
   }
 
-  //Passando propriedades para os camponentes
   return (
     <Container text className="containerPage">
       <Header as='h1'>Avaliação de Filmes</Header>
