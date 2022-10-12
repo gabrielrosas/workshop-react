@@ -1,3 +1,5 @@
+import { useState } from 'react' //importando  useState
+
 import {
   Container,
   Header,
@@ -27,15 +29,39 @@ const recordsMock = [{
 }]
 
 function App() {
+  //Criando estados
+  const [loading, setLoading] = useState(false) 
+  const [records, setRecords] = useState([])
+
+  //ccriando função base para a busca
+  const search = (termo) => {
+    if (termo) {
+      console.log({ termo })
+      setLoading(true)
+
+      setTimeout(() => {
+        setLoading(false)
+        setRecords(recordsMock)
+      }, 2000)
+    }
+  }
+
+  //Passando propriedades para os camponentes
   return (
     <Container text className="containerPage">
       <Header as='h1'>Avaliação de Filmes</Header>
 
       <Divider/>
-      <CampoBusca/>
+      <CampoBusca
+        loading={loading} 
+        search={search}
+      />
       <Divider/>
 
-      <ListaFilmes records={recordsMock}/>
+      <ListaFilmes 
+        loading={loading}
+        records={records}
+      />
     </Container>
   );
 }
