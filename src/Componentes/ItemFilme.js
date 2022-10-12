@@ -1,32 +1,35 @@
-import { useState } from 'react' //Importando useState
+import { useState } from 'react'
 
 import {
     Button,
     Item,
 } from 'semantic-ui-react'
 
-function ItemFilme({ imgUrl, titulo, ano }) {
-    const [over, setOver] = useState(0) //criando estado para hover
+function ItemFilme({ imgUrl, titulo, ano, salvarVoto, id, voto }) { //recebendo novos parametros
+    const [over, setOver] = useState(0)
 
-    //função para onMouseLeave
     const onMouseLeave = () => {
         setOver(0)
     }
 
-    //função para onMouseEnter
     const onMouseEnter = (btnVoto) => () => {
         setOver(btnVoto)
     }
 
-    //função para retornar icone correto
+    //Alterando para mostrar o resultado
     const getIcon = (btnVoto) => {
-        if ((over && over >= btnVoto)) {
+        if ((over && over >= btnVoto) || (voto && voto >= btnVoto)) {
             return "star"
         }
         return  "star outline"
     }
 
-    // passando as propriedades dos componentes
+    // evento de click nos botões de votação
+    const onClick = (btnVoto) => () => {
+        salvarVoto(id, btnVoto)
+    }
+
+    // passando o onClick para os componentes
     return (
         <Item>
             <Item.Image
@@ -38,11 +41,11 @@ function ItemFilme({ imgUrl, titulo, ano }) {
                 <Item.Meta>Ano: {ano}</Item.Meta>
                 <Item.Extra>
                     <Button.Group onMouseLeave={onMouseLeave}>
-                        <Button onMouseEnter={onMouseEnter(1)} icon={getIcon(1)} />
-                        <Button onMouseEnter={onMouseEnter(2)} icon={getIcon(2)} />
-                        <Button onMouseEnter={onMouseEnter(3)} icon={getIcon(3)} />
-                        <Button onMouseEnter={onMouseEnter(4)} icon={getIcon(4)} />
-                        <Button onMouseEnter={onMouseEnter(5)} icon={getIcon(5)} />
+                        <Button onClick={onClick(1)} onMouseEnter={onMouseEnter(1)} icon={getIcon(1)} />
+                        <Button onClick={onClick(2)} onMouseEnter={onMouseEnter(2)} icon={getIcon(2)} />
+                        <Button onClick={onClick(3)} onMouseEnter={onMouseEnter(3)} icon={getIcon(3)} />
+                        <Button onClick={onClick(4)} onMouseEnter={onMouseEnter(4)} icon={getIcon(4)} />
+                        <Button onClick={onClick(5)} onMouseEnter={onMouseEnter(5)} icon={getIcon(5)} />
                     </Button.Group>
                 </Item.Extra>
             </Item.Content>

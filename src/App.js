@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react' //importando useEffect
 
-import axios from 'axios' //importando axios
+import axios from 'axios'
 
 import {
   Container,
@@ -13,7 +13,6 @@ import './App.css';
 import CampoBusca from './Componentes/CampoBusca';
 import ListaFilmes from './Componentes/ListaFilmes';
 
-//função parse do resultado da requisição
 const parseRecord = (record) => {
   return {
     titulo: record.Title,
@@ -27,7 +26,34 @@ function App() {
   const [loading, setLoading] = useState(false) 
   const [records, setRecords] = useState([])
 
-  //fazendo requisição
+  //criando estados dos votos
+  const [votos, setVotos] = useState(() => {
+    try {
+      const value = JSON.parse(localStorage.getItem("votos"))
+      return value || {}
+    } catch (error) {
+      
+    }
+    return {}
+  })
+
+  //função para salvar os votos
+  const salvarVoto = (id, voto) => {
+    setVotos({
+      ...votos,
+      [id]: voto
+    })
+  }
+
+  //useEffect para salvar as alterações no localStage
+  useEffect(() => {
+    try {
+        localStorage.setItem("votos", JSON.stringify(votos))
+    } catch (error) {
+        localStorage.setItem("votos", "{}")
+    }
+  }, [votos])
+
   const search = (termo) => {
     if (termo) {
       setLoading(true)
@@ -44,6 +70,7 @@ function App() {
     }
   }
 
+  //passando as novas propriedades
   return (
     <Container text className="containerPage">
       <Header as='h1'>Avaliação de Filmes</Header>
@@ -58,6 +85,8 @@ function App() {
       <ListaFilmes 
         loading={loading}
         records={records}
+        salvarVoto={salvarVoto}
+        votos={votos}
       />
     </Container>
   );

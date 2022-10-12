@@ -1,4 +1,3 @@
-// importando novos componentes
 import {
     Item,
     Segment,
@@ -9,7 +8,6 @@ import {
 
 import ItemFilme from './ItemFilme'
 
-//Criando função para rodar loading
 function renderLoading() {
     return [... new Array(5)].map((value, index) => (
         <Placeholder key={`p_${index}`}>
@@ -22,9 +20,8 @@ function renderLoading() {
     ))
 }
 
-function ListaFilmes({ loading, records }) { //Recebendo novas propriedades
+function ListaFilmes({ loading, records, salvarVoto, votos }) { //Recebendo novas propriedades
 
-    //Rederizando loading
     if (loading) {
         return (
             <Segment loading>
@@ -33,8 +30,8 @@ function ListaFilmes({ loading, records }) { //Recebendo novas propriedades
         )
     }
 
-    // validação de quantidade de registros
     if(records.length > 0) {
+        //passando novos para o item
         return (
             <Segment>
                 <Item.Group divided>
@@ -45,6 +42,8 @@ function ListaFilmes({ loading, records }) { //Recebendo novas propriedades
                             titulo={record.titulo}
                             ano={record.ano}
                             id={record.id}
+                            salvarVoto={salvarVoto}
+                            voto={votos[record.id]}
                         />
                     ))}
                 </Item.Group>
@@ -52,7 +51,6 @@ function ListaFilmes({ loading, records }) { //Recebendo novas propriedades
         )
     }
 
-    // retorno de mensagem
     return (
         <Segment placeholder>
           <Header icon>
